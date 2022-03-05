@@ -55,6 +55,24 @@ const routes = [
         meta: { isAdminPage: false },
       },
       {
+        path: "user/notification",
+        name: "user-notification",
+        component: () => import("../views/UserNotification.vue"),
+        meta: { isAdminPage: false },
+      },
+      {
+        path: "user/public/chat",
+        name: "user-public-chat",
+        component: () => import("../views/UserPublicChat.vue"),
+        meta: { isAdminPage: false},
+      },
+      {
+        path: "user/private/message",
+        name: "user-private-message",
+        component: () => import("../views/UserPrivateMessage.vue"),
+        meta: { isAdminPage: false},
+      },
+      {
         path: "user/tweets/:tweet_id",
         name: "user-tweet",
         component: () => import("../views/UserTweet.vue"),
