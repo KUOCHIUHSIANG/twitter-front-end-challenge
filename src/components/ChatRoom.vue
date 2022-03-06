@@ -100,6 +100,9 @@ export default {
   watch: {
     historyMessage() {
       this.fetehMessageList()
+    },
+    newMessage() {
+      this.messageList.push(this.newMessage)
     }
   },
   created() {

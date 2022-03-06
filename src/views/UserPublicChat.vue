@@ -39,7 +39,7 @@ import { mapState } from "vuex";
 
 export default {
   props: {
-    newMessage: {
+    messageToSubmit: {
       type: String,
     },
   },
@@ -84,7 +84,7 @@ export default {
     this.$socket.emit("leavingChatroom");
   },
   watch: {
-    newMessage(newValue) {
+    messageToSubmit(newValue) {
       this.content = newValue
       this.send()
     }
