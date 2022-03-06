@@ -76,13 +76,14 @@ export default {
     },
     getNewMessage(data) {
       this.newMessage = data
-    }
   },
   beforeRouteUpdate(to, from, next) {
     this.isCurrentUserPage = Number(to.params.user_id) === this.currentUser.id;
     next();
   },
-};
+  }
+}
+
 </script>
 
 <style lang="scss" scoped>

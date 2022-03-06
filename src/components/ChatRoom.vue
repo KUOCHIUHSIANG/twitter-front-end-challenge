@@ -3,34 +3,44 @@
     <div class="chat-room-header">
       <div class="header-title-page">{{ title }}</div>
       <div class="header-title-tweet" v-show="isPrivateMessage">
-        {{ user.account }} 
+        {{ user.account }}
       </div>
     </div>
     <div class="chat-room-content">
       <div v-for="message in messageList" :key="message.id">
-        <div class="onOffline" v-if="message.type === 'online'">
+        <!-- <div class="onOffline" v-if="message.type === 'online'">
           <span>{{ message.userName }} 上線</span>
         </div>
         <div class="onOffline" v-if="message.type === 'offline'">
           <span>{{ message.userName }} 離線</span>
-        </div>
-        <div class="message" v-if="message.type === 'message'">
-          <div class="message-container" v-if="!message.isUser">
+        </div> -->
+        <div class="message">
+          <div class="message-container" v-if="message.UserId !== currentUser.id">
             <div
               class="message-avatar"
-              :style="{ backgroundImage: 'url(' + message.user.avatar + ')' }"
+              :style="{ backgroundImage: 'url(' + message.User.avatar + ')' }"
             ></div>
-            <div class="message-content">
-              <p>
-                {{ message.message }}
-              </p>
-              <span class="message-content-time">12:33</span>
+            <div class="message-content-wrapper">
+              <div class="message">
+                <p>
+                  {{ message.content }}
+                </p>
+              </div>
+              <span class="time">{{ message.createdAt | fromNow}}</span>
+            </div>
+          </div>
+          <div class="message-container message-container-myself" v-else>
+            <div class="message-content-wrapper">
+              <div class="message">
+                <p>
+                  {{ message.content }}
+                </p>
+              </div>
+              <span class="time">{{ message.createdAt | fromNow}}</span>
             </div>
           </div>
         </div>
       </div>
-      <!-- 1. Online / Offline -->
-      <!-- 2. Chat Bubble -->
     </div>
     <div class="chat-room-footer">
       <input
@@ -39,7 +49,11 @@
         placeholder="輸入訊息..."
         v-model="message"
       />
-      <div class="footer-btn" style="height: 20px; width: 20px">
+      <div
+        class="footer-btn"
+        style="height: 20px; width: 20px"
+        @click="sendMessage"
+      >
         <img src="../assets/icon/chatroom_send.svg" alt="" srcset="" />
       </div>
     </div>
@@ -47,35 +61,11 @@
 </template>
 
 <script>
-const dummyMessageList = [
-  {
-    id: 1,
-    type: "online",
-    action: "online",
-    userName: "123",
-  },
-  {
-    id: 2,
-    type: "message",
-    isUser: false,
-    user: {
-      avatar: "https://i.imgur.com/OdItn5D.jpeg",
-    },
-    message: "hello",
-    createdAt: "123",
-  },
-  {
-    id: 3,
-    type: "message",
-    isUser: true,
-    userAvatar: "img...",
-    message: "hello",
-    createdAt: "123",
-  },
-  { id: 4, type: "offline", action: "offline", userName: "cat" },
-];
+import { mapState } from "vuex";
+import { fromNowFilter } from "../utils/mixin";
 
 export default {
+  mixins: [fromNowFilter],
   props: {
     historyMessage: {
       type: Array
@@ -95,10 +85,22 @@ export default {
       messageList: [],
     };
   },
+  computed: {
+    ...mapState(["currentUser"]),
+  },
   methods: {
     fetehMessageList() {
-      this.messageList = dummyMessageList;
+      this.messageList = this.historyMessage;
     },
+    sendMessage() {
+      this.$emit("submit-message", this.message);
+      this.message = ''
+    },
+  },
+  watch: {
+    historyMessage() {
+      this.fetehMessageList()
+    }
   },
   created() {
     this.fetehMessageList();
@@ -116,7 +118,8 @@ export default {
   }
 
   &-header {
-    height: 55px;
+    min-height: 55px;
+    max-height: 55px;
     display: flex;
     align-items: center;
     border-bottom: $border-setting;
@@ -133,6 +136,7 @@ export default {
 
   &-content {
     flex-grow: 1;
+    overflow: scroll;
   }
 
   &-footer {
@@ -181,6 +185,7 @@ export default {
   .message {
     &-container {
       display: flex;
+      margin-bottom: 20px;
     }
     &-avatar {
       width: 40px;
@@ -191,20 +196,46 @@ export default {
       background-size: cover;
       border-radius: 50%;
     }
-    &-content {
-      position: relative;
+    &-content-wrapper {
       margin-left: 10px;
-      padding: 5px 10px;
       display: flex;
-      align-items: center;
-      background-color: $border-color;
-      border-radius: 50px 50px 50px 0;
-      p {
+      flex-flow: column nowrap;
+      .message {
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        background-color: $border-color;
+        border-radius: 50px 50px 50px 0;
+        padding: 5px 10px;
         font-size: 15px;
       }
-      &-time {
-        position: absolute;
-        top: 100%;
+      .time {
+        margin-top: 0;
+        color: $text-sub;
+        font-size: 13px;
+      }
+
+      &-myself {
+        border-radius: 50px 50px 0 50px;
+        background-color: $brand-orange;
+      }
+    }
+    &-container-myself {
+      justify-content: flex-end;
+      text-align: left;
+      .message-content-myself {
+        align-items: flex-end;
+      }
+      .message {
+        background-color: $brand-orange;
+        border-radius: 50px 50px 0 50px;
+        color: #fff;
+      }
+      .time {
+        margin-top: 0;
+        color: $text-sub;
+        font-size: 13px;
+        // text-align: left;
       }
     }
   }

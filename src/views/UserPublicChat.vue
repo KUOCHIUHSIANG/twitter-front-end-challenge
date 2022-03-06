@@ -1,9 +1,16 @@
 <template>
   <div class="page-container">
     <div class="users-list">
-      <span>123</span>
-      <div v-for="user in users" :key="user.id" @click.stop.prevent="toUserProfilePage(user.id)" class="user">
-        <div class="user-avatar bg-empty" :style="{ backgroundImage: 'url(' + user.avatar + ')' }"></div>
+      <div
+        v-for="user in users"
+        :key="user.id"
+        @click.stop.prevent="toUserProfilePage(user.id)"
+        class="user"
+      >
+        <div
+          class="user-avatar bg-empty"
+          :style="{ backgroundImage: 'url(' + user.avatar + ')' }"
+        ></div>
         <div class="user-info">
           <span class="user-name">{{ user.name }}</span>
           <span class="account user-account">{{ user.account }}</span>
@@ -16,47 +23,52 @@
     </div> -->
     <!-- </div> -->
     <!-- <ChatRoom /> -->
-    <br>
-    <input type="text" v-model="content" placeholder="輸入訊息...">
-    <br>
+    <!-- <br />
+    <input type="text" v-model="content" placeholder="輸入訊息..." />
+    <br />
     <button @click="send">send</button>
-    <br>
-    <div id="show"></div>
+    <br />
+    <div id="show"></div> -->
     <!-- <div class="users"> {{ users }} </div> -->
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from "vuex";
 // import ChatRoom from '../components/ChatRoom.vue'
 
 export default {
+  props: {
+    newMessage: {
+      type: String,
+    },
+  },
   components: {
     // ChatRoom
   },
   data() {
     return {
-      content: '',
+      content: "",
       users: [],
       onlineCount: 0,
       title: '公開聊天室',
+      historyMessage: "",
     }
   },
   methods: {
     send() {
-      this.$socket.emit('sendMessage',{
-        userId: this.currentUser.id,
+      this.$socket.emit("sendMessage", {
         content: this.content,
       });
       this.content = "";
     },
     addUser() {
-      this.$socket.emit('addUser',({
+      this.$socket.emit("addUser", {
         id: this.currentUser.id,
         name: this.currentUser.name,
         account: this.currentUser.account,
-        avatar: this.currentUser.avatar
-      }));
+        avatar: this.currentUser.avatar,
+      });
     },
     toUserProfilePage(userId) {
       this.$router.push({
@@ -66,26 +78,32 @@ export default {
     },
   },
   created() {
-    this.addUser()
+    this.addUser();
   },
   destroyed() {
-    this.$socket.emit('leavingChatroom')
+    this.$socket.emit("leavingChatroom");
+  },
+  watch: {
+    newMessage(newValue) {
+      this.content = newValue
+      this.send()
+    }
   },
   sockets: {
     connect() {
-      console.log("connect!")
+      console.log("connect!");
     },
     onlineUser(data) {
-      this.users = data.onlineUser
-      this.onlineCount = data.numUsers
+      this.users = data.onlineUser;
+      this.onlineCount = data.numUsers;
     },
     userJoin(data) {
       function push(array, item) {
-        if (!array.find(({id}) => id === item.id)) {
-          array.push(item)
+        if (!array.find(({ id }) => id === item.id)) {
+          array.push(item);
         }
       }
-      push(this.users, data)
+      push(this.users, data);
     },
     newMessage(data) {
       this.$emit('get-new-message', data)
@@ -94,8 +112,8 @@ export default {
       this.$emit('get-history-message', data)
     },
     userLeave(data) {
-      console.log('userLeave',data)
-    }
+      console.log("userLeave", data);
+    },
   },
   // watch: {
   //   historyMessage(newValue) {
@@ -105,7 +123,7 @@ export default {
   computed: {
     ...mapState(["currentUser"]),
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -115,7 +133,7 @@ div.users-list {
   max-width: 414px;
   min-width: 300px;
   border-top: $border-setting;
-  .user{
+  .user {
     display: flex;
     align-items: center;
     border-bottom: $border-setting;
@@ -145,8 +163,7 @@ div.users-list {
   }
 }
 
-
-.bg-empty{
+.bg-empty {
   background-repeat: no-repeat;
   background-size: cover;
   background-color: $empty-img;
