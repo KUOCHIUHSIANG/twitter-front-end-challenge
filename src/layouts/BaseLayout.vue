@@ -11,7 +11,20 @@
         @after-follow-change="afterFollowChange"
       />
     </div>
-    <PopularUsers class="container-right" v-if="!isAdmin && currentPathName !== 'user-setting' && currentPathName !== 'user-public-chat' && currentPathName !== 'user-private-message'" :need-update-popular-user="needUpdatePopularUser" />
+    <PopularUsers
+      class="container-popular-users"
+      v-if="
+        !isAdmin &&
+        currentPathName !== 'user-setting' &&
+        currentPathName !== 'user-public-chat' &&
+        currentPathName !== 'user-private-message'
+      "
+      :need-update-popular-user="needUpdatePopularUser"
+    />
+    <ChatRoom
+      class="container-chatroom"
+      v-if="currentPathName === 'user-public-chat'"
+    />
     <TweetModal v-if="modalVisibility" @after-close-modal="afterCloseModal" />
   </div>
 </template>
@@ -20,6 +33,7 @@
 import Navbar from "@/components/Navbar.vue";
 import Header from "@/components/Header.vue";
 import PopularUsers from "@/components/PopularUsers.vue";
+import ChatRoom from "@/components/ChatRoom.vue";
 import TweetModal from "@/components/TweetModal.vue";
 import { mapState } from "vuex";
 
@@ -29,12 +43,13 @@ export default {
     Header,
     PopularUsers,
     TweetModal,
+    ChatRoom,
   },
   data() {
     return {
       modalVisibility: false,
       isCurrentUserPage: false,
-      needUpdatePopularUser: false
+      needUpdatePopularUser: false,
     };
   },
   computed: {
@@ -48,7 +63,7 @@ export default {
       this.modalVisibility = false;
     },
     afterFollowChange() {
-      this.needUpdatePopularUser = !this.needUpdatePopularUser
+      this.needUpdatePopularUser = !this.needUpdatePopularUser;
     },
   },
   beforeRouteUpdate(to, from, next) {
@@ -80,8 +95,12 @@ export default {
         height: 93vh;
       }
     }
-    &-right {
+    &-popular-users {
       flex-basis: 463px;
+      height: 100vh;
+    }
+    &-chatroom {
+      flex-basis: 712px;
       height: 100vh;
     }
   }
