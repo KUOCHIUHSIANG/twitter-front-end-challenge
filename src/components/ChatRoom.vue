@@ -3,7 +3,7 @@
     <div class="chat-room-header-title">
       <div class="header-title-page">{{ title }}</div>
       <div class="header-title-tweet" v-show="isPrivateMessage">
-        {{ user.account }} 推文
+        {{ user.account }} 
       </div>
     </div>
   </div>
