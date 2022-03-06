@@ -9,6 +9,8 @@
       <Header /><router-view
         class="container-middle-main"
         @after-follow-change="afterFollowChange"
+        @get-history-message="getHistoryMessage"
+        @get-new-message="getNewMessage"
       />
     </div>
     <PopularUsers
@@ -24,8 +26,8 @@
     <ChatRoom
       class="container-chatroom"
       v-if="currentPathName === 'user-public-chat'"
-      @get-history-message="getHistoryMessage"
       :history-message="historyMessage"
+      :new-message="newMessage"
     />
     <TweetModal v-if="modalVisibility" @after-close-modal="afterCloseModal" />
   </div>
@@ -53,6 +55,7 @@ export default {
       isCurrentUserPage: false,
       needUpdatePopularUser: false,
       historyMessage: [],
+      newMessage: {}
     };
   },
   computed: {
@@ -70,6 +73,9 @@ export default {
     },
     getHistoryMessage(data) {
       this.historyMessage = data
+    },
+    getNewMessage(data) {
+      this.newMessage = data
     }
   },
   beforeRouteUpdate(to, from, next) {

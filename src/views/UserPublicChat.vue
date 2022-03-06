@@ -40,12 +40,12 @@ export default {
       users: [],
       onlineCount: 0,
       title: '公開聊天室',
-      historyMessage: ""
     }
   },
   methods: {
     send() {
       this.$socket.emit('sendMessage',{
+        userId: this.currentUser.id,
         content: this.content,
       });
       this.content = "";
@@ -88,19 +88,20 @@ export default {
       push(this.users, data)
     },
     newMessage(data) {
-      var p = document.createElement("p")
-      p.innerHTML= data.content+"\r\n"
-      var showDiv = document.getElementById("show");
-      showDiv.append(p)
+      this.$emit('get-new-message', data)
     },
     historyMessage(data) {
-      console.log('historyM',data)
       this.$emit('get-history-message', data)
     },
     userLeave(data) {
       console.log('userLeave',data)
     }
   },
+  // watch: {
+  //   historyMessage(newValue) {
+  //     this.$emit('get-history-message', newValue)
+  //   }
+  // },
   computed: {
     ...mapState(["currentUser"]),
   },
