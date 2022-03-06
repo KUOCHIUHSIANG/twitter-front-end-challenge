@@ -107,7 +107,7 @@ export default {
       this.messageList = dummyMessageList;
     },
     sendMessage() {
-      this.$emit('af')
+      this.$emit('submit-message', this.message)
     }
   },
   created() {
