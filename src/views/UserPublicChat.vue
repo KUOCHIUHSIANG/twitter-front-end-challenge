@@ -15,13 +15,13 @@
     </div>
     </div>
     <!-- <ChatRoom /> -->
-    <!-- <br>
+    <br>
     <input type="text" v-model="content" placeholder="輸入訊息...">
     <br>
     <button @click="send">send</button>
     <br>
     <div id="show"></div>
-    <div class="users"> {{ users }} </div> -->
+    <!-- <div class="users"> {{ users }} </div> -->
   </div>
 </template>
 
@@ -38,7 +38,8 @@ export default {
       content: '',
       users: [],
       onlineCount: 0,
-      title: '公開聊天室'
+      title: '公開聊天室',
+      historyMessage: ""
     }
   },
   methods: {
@@ -86,10 +87,16 @@ export default {
       push(this.users, data)
     },
     newMessage(data) {
-      var dark = document.createElement("p")
-      dark.innerHTML= data.content+"\r\n"
-      var inin = document.getElementById("show");
-      inin.append(dark)
+      var p = document.createElement("p")
+      p.innerHTML= data.content+"\r\n"
+      var showDiv = document.getElementById("show");
+      showDiv.append(p)
+    },
+    historyMessage(data) {
+      console.log('historyM',data)
+    },
+    userLeave(data) {
+      console.log('userLeave',data)
     }
   },
   computed: {
@@ -100,10 +107,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/scss/main.scss";
-
-div.page-container {
-  position: relative;
-}
 
 div.users-list {
   max-width: 414px;
@@ -139,11 +142,6 @@ div.users-list {
   }
 }
 
-div.chat-room-container {
-  position: absolute;
-  top: -55px;
-  left: 414px;
-}
 
 .bg-empty{
   background-repeat: no-repeat;
