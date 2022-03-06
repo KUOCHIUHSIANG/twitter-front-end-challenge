@@ -3,34 +3,44 @@
     <div class="chat-room-header">
       <div class="header-title-page">{{ title }}</div>
       <div class="header-title-tweet" v-show="isPrivateMessage">
-        {{ user.account }} 
+        {{ user.account }}
       </div>
     </div>
     <div class="chat-room-content">
       <div v-for="message in messageList" :key="message.id">
-        <div class="onOffline" v-if="message.type === 'online'">
+        <!-- <div class="onOffline" v-if="message.type === 'online'">
           <span>{{ message.userName }} 上線</span>
         </div>
         <div class="onOffline" v-if="message.type === 'offline'">
           <span>{{ message.userName }} 離線</span>
-        </div>
+        </div> -->
         <div class="message" v-if="message.type === 'message'">
           <div class="message-container" v-if="!message.isUser">
             <div
               class="message-avatar"
               :style="{ backgroundImage: 'url(' + message.user.avatar + ')' }"
             ></div>
-            <div class="message-content">
-              <p>
-                {{ message.message }}
-              </p>
-              <span class="message-content-time">12:33</span>
+            <div class="message-content-wrapper">
+              <div class="message">
+                <p>
+                  {{ message.message }}
+                </p>
+              </div>
+              <span class="time">12:33</span>
+            </div>
+          </div>
+          <div class="message-container message-container-myself" v-else>
+            <div class="message-content-wrapper">
+              <div class="message">
+                <p>
+                  {{ message.message }}
+                </p>
+              </div>
+              <span class="time">12:33</span>
             </div>
           </div>
         </div>
       </div>
-      <!-- 1. Online / Offline -->
-      <!-- 2. Chat Bubble -->
     </div>
     <div class="chat-room-footer">
       <input
@@ -39,7 +49,7 @@
         placeholder="輸入訊息..."
         v-model="message"
       />
-      <div class="footer-btn" style="height: 20px; width: 20px">
+      <div class="footer-btn" style="height: 20px; width: 20px" @click="sendMessage">
         <img src="../assets/icon/chatroom_send.svg" alt="" srcset="" />
       </div>
     </div>
@@ -78,8 +88,8 @@ const dummyMessageList = [
 export default {
   props: {
     historyMessage: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   data() {
     return {
@@ -96,6 +106,9 @@ export default {
     fetehMessageList() {
       this.messageList = dummyMessageList;
     },
+    sendMessage() {
+      this.$emit('af')
+    }
   },
   created() {
     this.fetehMessageList();
@@ -178,6 +191,7 @@ export default {
   .message {
     &-container {
       display: flex;
+      margin-bottom: 20px;
     }
     &-avatar {
       width: 40px;
@@ -188,20 +202,46 @@ export default {
       background-size: cover;
       border-radius: 50%;
     }
-    &-content {
-      position: relative;
+    &-content-wrapper {
       margin-left: 10px;
-      padding: 5px 10px;
       display: flex;
-      align-items: center;
-      background-color: $border-color;
-      border-radius: 50px 50px 50px 0;
-      p {
+      flex-flow: column nowrap;
+      .message {
+        margin-bottom: 0;
+        display: flex;
+        align-items: center;
+        background-color: $border-color;
+        border-radius: 50px 50px 50px 0;
+        padding: 5px 10px;
         font-size: 15px;
       }
-      &-time {
-        position: absolute;
-        top: 100%;
+      .time {
+        margin-top: 0;
+        color: $text-sub;
+        font-size: 13px;
+      }
+
+      &-myself {
+        border-radius: 50px 50px 0 50px;
+        background-color: $brand-orange;
+      }
+    }
+    &-container-myself {
+      justify-content: flex-end;
+      text-align: left;
+      .message-content-myself {
+        align-items: flex-end;
+      }
+      .message {
+        background-color: $brand-orange;
+        border-radius: 50px 50px 0 50px;
+        color: #fff;
+      }
+      .time {
+        margin-top: 0;
+        color: $text-sub;
+        font-size: 13px;
+        // text-align: left;
       }
     }
   }

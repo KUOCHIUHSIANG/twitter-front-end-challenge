@@ -9,6 +9,7 @@
       <Header /><router-view
         class="container-middle-main"
         @after-follow-change="afterFollowChange"
+        @get-history-message="getHistoryMessage"
       />
     </div>
     <PopularUsers
@@ -24,7 +25,6 @@
     <ChatRoom
       class="container-chatroom"
       v-if="currentPathName === 'user-public-chat'"
-      @get-history-message="getHistoryMessage"
       :history-message="historyMessage"
     />
     <TweetModal v-if="modalVisibility" @after-close-modal="afterCloseModal" />
