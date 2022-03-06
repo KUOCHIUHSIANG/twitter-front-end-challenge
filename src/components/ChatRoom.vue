@@ -91,6 +91,7 @@ export default {
     },
     sendMessage() {
       this.$emit("submit-message", this.message);
+      this.message = ''
     },
   },
   watch: {
