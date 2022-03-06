@@ -86,7 +86,8 @@ export default {
   },
   watch: {
     newMessage(newValue) {
-
+      this.content = newValue
+      this.send()
     }
   },
   sockets: {
