@@ -1,6 +1,7 @@
 <template>
   <div class="page-container">
     <div class="users-list">
+      <span>123</span>
       <div v-for="user in users" :key="user.id" @click.stop.prevent="toUserProfilePage(user.id)" class="user">
         <div class="user-avatar bg-empty" :style="{ backgroundImage: 'url(' + user.avatar + ')' }"></div>
         <div class="user-info">
@@ -9,11 +10,11 @@
         </div>
       </div>
     </div>
-    <div class="chat-room-container">
+    <!-- <div class="chat-room-container">
       <div class="chat-room-header-title">
       <div class="header-title-page">{{ title }}</div>
-    </div>
-    </div>
+    </div> -->
+    <!-- </div> -->
     <!-- <ChatRoom /> -->
     <!-- <br>
     <input type="text" v-model="content" placeholder="輸入訊息...">
@@ -38,7 +39,7 @@ export default {
       content: '',
       users: [],
       onlineCount: 0,
-      title: '公開聊天室'
+      title: '公開聊天室?'
     }
   },
   methods: {
