@@ -14,29 +14,29 @@
         <div class="onOffline" v-if="message.type === 'offline'">
           <span>{{ message.userName }} 離線</span>
         </div> -->
-        <div class="message" v-if="message.type === 'message'">
-          <div class="message-container" v-if="!message.isUser">
+        <div class="message">
+          <div class="message-container" v-if="message.UserId !== currentUser.id">
             <div
               class="message-avatar"
-              :style="{ backgroundImage: 'url(' + message.user.avatar + ')' }"
+              :style="{ backgroundImage: 'url(' + message.User.avatar + ')' }"
             ></div>
             <div class="message-content-wrapper">
               <div class="message">
                 <p>
-                  {{ message.message }}
+                  {{ message.content }}
                 </p>
               </div>
-              <span class="time">12:33</span>
+              <span class="time">{{ message.createdAt | fromNow}}</span>
             </div>
           </div>
           <div class="message-container message-container-myself" v-else>
             <div class="message-content-wrapper">
               <div class="message">
                 <p>
-                  {{ message.message }}
+                  {{ message.content }}
                 </p>
               </div>
-              <span class="time">12:33</span>
+              <span class="time">{{ message.createdAt | fromNow}}</span>
             </div>
           </div>
         </div>
@@ -49,7 +49,11 @@
         placeholder="輸入訊息..."
         v-model="message"
       />
-      <div class="footer-btn" style="height: 20px; width: 20px" @click="sendMessage">
+      <div
+        class="footer-btn"
+        style="height: 20px; width: 20px"
+        @click="sendMessage"
+      >
         <img src="../assets/icon/chatroom_send.svg" alt="" srcset="" />
       </div>
     </div>
@@ -57,35 +61,11 @@
 </template>
 
 <script>
-const dummyMessageList = [
-  {
-    id: 1,
-    type: "online",
-    action: "online",
-    userName: "123",
-  },
-  {
-    id: 2,
-    type: "message",
-    isUser: false,
-    user: {
-      avatar: "https://i.imgur.com/OdItn5D.jpeg",
-    },
-    message: "hello",
-    createdAt: "123",
-  },
-  {
-    id: 3,
-    type: "message",
-    isUser: true,
-    userAvatar: "img...",
-    message: "hello",
-    createdAt: "123",
-  },
-  { id: 4, type: "offline", action: "offline", userName: "cat" },
-];
+import { mapState } from "vuex";
+import { fromNowFilter } from "../utils/mixin";
 
 export default {
+  mixins: [fromNowFilter],
   props: {
     historyMessage: {
       type: Array,
@@ -102,12 +82,20 @@ export default {
       messageList: [],
     };
   },
+  computed: {
+    ...mapState(["currentUser"]),
+  },
   methods: {
     fetehMessageList() {
-      this.messageList = dummyMessageList;
+      this.messageList = this.historyMessage;
     },
     sendMessage() {
-      this.$emit('submit-message', this.message)
+      this.$emit("submit-message", this.message);
+    },
+  },
+  watch: {
+    historyMessage() {
+      this.fetehMessageList()
     }
   },
   created() {
@@ -126,7 +114,8 @@ export default {
   }
 
   &-header {
-    height: 55px;
+    min-height: 55px;
+    max-height: 55px;
     display: flex;
     align-items: center;
     border-bottom: $border-setting;
@@ -143,6 +132,7 @@ export default {
 
   &-content {
     flex-grow: 1;
+    overflow: scroll;
   }
 
   &-footer {

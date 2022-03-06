@@ -1,7 +1,6 @@
 <template>
   <div class="page-container">
     <div class="users-list">
-      <span>123</span>
       <div
         v-for="user in users"
         :key="user.id"
@@ -24,12 +23,12 @@
     </div> -->
     <!-- </div> -->
     <!-- <ChatRoom /> -->
-    <br />
+    <!-- <br />
     <input type="text" v-model="content" placeholder="輸入訊息..." />
     <br />
     <button @click="send">send</button>
     <br />
-    <div id="show"></div>
+    <div id="show"></div> -->
     <!-- <div class="users"> {{ users }} </div> -->
   </div>
 </template>
