@@ -24,6 +24,8 @@
     <ChatRoom
       class="container-chatroom"
       v-if="currentPathName === 'user-public-chat'"
+      @get-history-message="getHistoryMessage"
+      :history-message="historyMessage"
     />
     <TweetModal v-if="modalVisibility" @after-close-modal="afterCloseModal" />
   </div>
@@ -50,6 +52,7 @@ export default {
       modalVisibility: false,
       isCurrentUserPage: false,
       needUpdatePopularUser: false,
+      historyMessage: [],
     };
   },
   computed: {
@@ -65,6 +68,9 @@ export default {
     afterFollowChange() {
       this.needUpdatePopularUser = !this.needUpdatePopularUser;
     },
+    getHistoryMessage(data) {
+      this.historyMessage = data
+    }
   },
   beforeRouteUpdate(to, from, next) {
     this.isCurrentUserPage = Number(to.params.user_id) === this.currentUser.id;

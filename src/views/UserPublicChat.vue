@@ -95,6 +95,7 @@ export default {
     },
     historyMessage(data) {
       console.log('historyM',data)
+      this.$emit('get-history-message', data)
     },
     userLeave(data) {
       console.log('userLeave',data)

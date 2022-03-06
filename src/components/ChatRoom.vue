@@ -76,6 +76,11 @@ const dummyMessageList = [
 ];
 
 export default {
+  props: {
+    historyMessage: {
+      type: Array
+    }
+  },
   data() {
     return {
       user: {
