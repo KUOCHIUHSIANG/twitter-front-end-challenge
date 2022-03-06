@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-container">
     <div class="users-list">
       <div v-for="user in users" :key="user.id" @click.stop.prevent="toUserProfilePage(user.id)" class="user">
         <div class="user-avatar bg-empty" :style="{ backgroundImage: 'url(' + user.avatar + ')' }"></div>
@@ -9,30 +9,36 @@
         </div>
       </div>
     </div>
-    <ChatRoom />
-    <br>
+    <div class="chat-room-container">
+      <div class="chat-room-header-title">
+      <div class="header-title-page">{{ title }}</div>
+    </div>
+    </div>
+    <!-- <ChatRoom /> -->
+    <!-- <br>
     <input type="text" v-model="content" placeholder="輸入訊息...">
     <br>
     <button @click="send">send</button>
     <br>
     <div id="show"></div>
-    <div class="users"> {{ users }} </div>
+    <div class="users"> {{ users }} </div> -->
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import ChatRoom from '../components/ChatRoom.vue'
+// import ChatRoom from '../components/ChatRoom.vue'
 
 export default {
   components: {
-    ChatRoom
+    // ChatRoom
   },
   data() {
     return {
       content: '',
       users: [],
       onlineCount: 0,
+      title: '公開聊天室'
     }
   },
   methods: {
@@ -95,8 +101,13 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/scss/main.scss";
 
+div.page-container {
+  position: relative;
+}
+
 div.users-list {
-  width: 414px;
+  max-width: 414px;
+  min-width: 300px;
   border-top: $border-setting;
   .user{
     display: flex;
@@ -126,6 +137,12 @@ div.users-list {
       background-color: $border;
     }
   }
+}
+
+div.chat-room-container {
+  position: absolute;
+  top: -55px;
+  left: 414px;
 }
 
 .bg-empty{

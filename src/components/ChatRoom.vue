@@ -3,7 +3,7 @@
     <div class="chat-room-header-title">
       <div class="header-title-page">{{ title }}</div>
       <div class="header-title-tweet" v-show="isPrivateMessage">
-        {{ viewUser.tweetCount }} 推文
+        {{ user.account }} 推文
       </div>
     </div>
   </div>
@@ -14,6 +14,10 @@
 export default {
   data() {
     return {
+      user: {
+        name: Apple,
+        account: apple
+      },
       title: "公開聊天室"
     }
   }
