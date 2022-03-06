@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Toast from "vue-toastification";
+import VueSocketIO from 'vue-socket.io';
 import "vue-toastification/dist/index.css";
 import "./assets/scss/main.scss"
 
@@ -25,6 +26,14 @@ const options = {
 };
 
 Vue.use(Toast, options);
+
+Vue.use(new VueSocketIO({
+    debug: true,
+    // 服务器端地址
+    connection: 'http://localhost:3000',
+    vuex: {
+    }
+}))
 
 Vue.config.productionTip = false
 

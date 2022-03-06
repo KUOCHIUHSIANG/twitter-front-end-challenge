@@ -16,7 +16,8 @@
       </svg>
     </div>
     <div class="header-title">
-      <div class="header-title-page">{{ title }}</div>
+      <div v-if="isPublicChat" class="header-title-page">{{ title }}（{{ onlineUsers }}）</div>
+      <div v-else class="header-title-page">{{ title }}</div>
       <div class="header-title-tweet" v-show="isUser">
         {{ viewUser.tweetCount }} 推文
       </div>
@@ -31,7 +32,9 @@ export default {
   data() {
     return {
       isUser: false,
-      backArrowVisibility: false
+      backArrowVisibility: false,
+      isPublicChat: false,
+      onlineUsers: 0,
     };
   },
   computed: {
@@ -46,23 +49,43 @@ export default {
         case "admin-tweets":
           this.isUser = false;
           this.backArrowVisibility = false;
+          this.isPublicChat = false;
           return "推文清單";
         case "admin-users":
           this.isUser = false;
           this.backArrowVisibility = false;
+          this.isPublicChat = false;
           return "使用者列表";
         case "user-setting":
           this.isUser = false;
           this.backArrowVisibility = false;
+          this.isPublicChat = false;
           return "帳戶設定";
         case "user-home":
           this.isUser = false;
           this.backArrowVisibility = false;
+          this.isPublicChat = false;
           return "首頁";
         case "user-tweet":
           this.isUser = false;
           this.backArrowVisibility = true;
+          this.isPublicChat = false;
           return "推文";
+        case "user-notification":
+          this.isUser = false;
+          this.backArrowVisibility = false;
+          this.isPublicChat = false;
+          return "通知";
+        case "user-public-chat":
+          this.isUser = false;
+          this.backArrowVisibility = false;
+          this.isPublicChat = true;
+          return "上線使用者";
+        case "user-private-message":
+          this.isUser = false;
+          this.backArrowVisibility = false;
+          this.isPublicChat = false;
+          return "訊息";
         default:
         case "user-all-tweets":
         case "user-all-replies":
@@ -71,6 +94,7 @@ export default {
         case "user-followings":
           this.isUser = true;
           this.backArrowVisibility = true;
+          this.isPublicChat = false;
           return this.viewUser.name;
       }
     },
