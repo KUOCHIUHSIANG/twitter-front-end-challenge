@@ -8,6 +8,7 @@
     <div class="container-middle">
       <Header /><router-view
         class="container-middle-main"
+        :message-to-submit="messageToSubmit"
         @after-follow-change="afterFollowChange"
         @get-history-message="getHistoryMessage"
         @get-new-message="getNewMessage"
@@ -28,6 +29,7 @@
       v-if="currentPathName === 'user-public-chat'"
       :history-message="historyMessage"
       :new-message="newMessage"
+      @submit-message="afterSubmitMessage"
     />
     <TweetModal v-if="modalVisibility" @after-close-modal="afterCloseModal" />
   </div>
@@ -55,7 +57,8 @@ export default {
       isCurrentUserPage: false,
       needUpdatePopularUser: false,
       historyMessage: [],
-      newMessage: {}
+      newMessage: {},
+      messageToSubmit: ''
     };
   },
   computed: {
@@ -76,6 +79,9 @@ export default {
     },
     getNewMessage(data) {
       this.newMessage = data
+  },
+  afterSubmitMessage(message) {
+    this.messageToSubmit = message
   },
   beforeRouteUpdate(to, from, next) {
     this.isCurrentUserPage = Number(to.params.user_id) === this.currentUser.id;
