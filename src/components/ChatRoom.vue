@@ -79,6 +79,9 @@ export default {
   props: {
     historyMessage: {
       type: Array
+    },
+    newMessage: {
+      type: Object
     }
   },
   data() {
