@@ -20,6 +20,7 @@
 * 使用者 3: Account: user3 / Password: 12345678 
 * 使用者 4: Account: user4 / Password: 12345678 
 * 使用者 5: Account: user5 / Password: 12345678 
+* 管理者  : Account: root  / Password: 12345678 
 
 ## 網站連結
 https://kuochiuhsiang.github.io/twitter-front-end-challenge/
