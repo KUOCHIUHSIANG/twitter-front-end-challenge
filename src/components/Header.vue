@@ -16,7 +16,7 @@
       </svg>
     </div>
     <div class="header-title">
-      <div v-if="isPublicChat" class="header-title-page">{{ title }}（{{ onlineUsers }}）</div>
+      <div v-if="isPublicChat" class="header-title-page">{{ title }}</div>
       <div v-else class="header-title-page">{{ title }}</div>
       <div class="header-title-tweet" v-show="isUser">
         {{ viewUser.tweetCount }} 推文
