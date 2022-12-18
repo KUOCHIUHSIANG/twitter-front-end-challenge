@@ -49,3 +49,8 @@ npm run serve
 
 ### 相關套件
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+## 因Heroku不再提供免費空間，故暫時先改成自行下載後端伺福器的方式來DEMO
+後端REPO: https://github.com/lavender0822/twitter-chatroom
+依照後端readme步驟啟動專案後即可正常使用simple-twitter網站
