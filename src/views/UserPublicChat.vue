@@ -106,9 +106,11 @@ export default {
       push(this.users, data);
     },
     newMessage(data) {
+      console.log('newMessage',data)
       this.$emit('get-new-message', data)
     },
     historyMessage(data) {
+      console.log('history:',data)
       this.$emit('get-history-message', data)
     },
     userLeave(data) {

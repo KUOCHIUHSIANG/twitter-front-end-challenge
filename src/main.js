@@ -30,8 +30,8 @@ Vue.use(Toast, options);
 Vue.use(new VueSocketIO({
     debug: true,
     // 服務器端地址
-    // connection: 'http://localhost:3000',
-    connection: 'https://twitter-chatroom-2022.herokuapp.com/',
+    connection: 'http://localhost:3000',
+    // connection: 'https://twitter-chatroom-2022.herokuapp.com/',
     vuex: {
     }
 }))
