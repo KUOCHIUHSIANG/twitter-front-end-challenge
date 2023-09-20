@@ -2,9 +2,9 @@
   <div class="chat-room-container">
     <div class="chat-room-header">
       <div class="header-title-page">{{ title }}</div>
-      <div class="header-title-tweet" v-show="isPrivateMessage">
+      <!-- <div class="header-title-tweet" v-show="isPrivateMessage">
         {{ user.account }}
-      </div>
+      </div> -->
     </div>
     <div class="chat-room-content">
       <div v-for="message in messageList" :key="message.id">
